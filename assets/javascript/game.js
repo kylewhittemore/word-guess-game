@@ -1,10 +1,10 @@
 
-// the alphabet array is established so that the addEventListener('keyup') 
-// events can be applied to each key with a loop.
+// the alphabet array is created to check the input letter against when determining  
+// whether the input is a valid letter.
 const alphabetArray = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
 
 // wordArray holds the array of words that the app will randomly select a target
-// word from.  I would like this to link to a generic word-game word list
+// word from.  I would like this to somehow link to a generic word-game word list
 // if there is such a thing...there must be right?
 const wordArray = ['jump', 'garbage', 'mountain', 'valley', 'carrot', 'cucumber', 'hummus', 'pita'];
 
@@ -13,13 +13,14 @@ const guessedLetterDisplay = document.getElementById('display-guessed-letter');
 const targetWordDisplay = document.getElementById('display-target-word');
 const bannerDisplay = document.getElementById('banner-text');
 const winsDisplay = document.getElementById('display-number-wins')
+const guessesLeftDisplay = document.getElementById('display-guesses-left');
 
 // the banner is a title when playing, and prompts the user to press a key to start 
 // a new game.
 const defaultBannerDisplay = 'Press a key to begin!';
 const activeBannerDisplay = 'Word Guess Game!';
 
-// sets the initial banner state to key-prompt
+// sets the initial banner state to key-prompt the user
 bannerDisplay.innerHTML = defaultBannerDisplay;
 
 // -----------------------------------------------------------------------------------
@@ -31,15 +32,15 @@ bannerDisplay.innerHTML = defaultBannerDisplay;
 // targetWord is re-set each time .getTargetWord() is called (in the .startGame()
 // method), and it is the word that the user is trying to guess.  targetWordGameState is 
 // an array that has a '_' for each letter in targetWord.  It serves as the game state 
-// counter, each valid guess switches the '_' for the letter.  when the
+// counter, each valid guess switches the '_' for the letter guessed.  when the
 // targetWordGameState has no more '_' the user has won and .endGame() is triggered.
 
 const gameObject = {
+    
     isActive: false,
     lettersGuessed: [],
     guessesLeft: 0,
     numUserWins: 0,
-    numUserLosses: 0,
     targetWord: '',
     targetWordGameState: [],
 
@@ -47,21 +48,23 @@ const gameObject = {
     // the method sets the gameboard up with default values, selects the targetWord, 
     // and splits it into the targetWordGameState array as '_' that will be converted to their letter values as the game progresses.
     startGame: function () {
-        gameObject.targetWord = gameObject.getTargetWord(wordArray);
+        this.targetWord = this.getTargetWord(wordArray);
         console.log(this.targetWord);
-        gameObject.targetWordGameState = gameObject.targetWord.split("");
-        gameObject.lettersGuessed = [];
-        gameObject.guessesLeft = 10;
-        gameObject.isActive = true;
-        guessedLetterDisplay.innerHTML = '';
+        this.targetWordGameState = this.targetWord.split("");
+        this.lettersGuessed = [];
+        this.guessesLeft = 5;
+        this.isActive = true;
+        bannerDisplay.innerHTML = activeBannerDisplay;
+        guessesLeftDisplay.innerHTML = this.guessesLeft;
 
-
-        //loop to set the gameState counter, use a '_____' copy of the word
-        for (i = 0; i < gameObject.targetWord.length; i++) {
-            gameObject.targetWordGameState[i] = '_';
+    // loop to set the gameState counter, uses a '_____' copy of the word, and converts
+    // each letter to '_'
+        for (i = 0; i < this.targetWord.length; i++) {
+            this.targetWordGameState[i] = '_';
         };
 
-        targetWordDisplay.innerHTML = gameObject.targetWordGameState.join(' ');
+    // the target word is then displayed as '_'s 
+        targetWordDisplay.innerHTML = this.targetWordGameState.join(' ');
     },
 
     // getTargetWord is called by startGame() and it generates as random number between 
@@ -77,13 +80,13 @@ const gameObject = {
     // the list in the html.
     addKeyPress: function (key) {
         this.lettersGuessed.push(key);
-        guessedLetterDisplay.innerHTML = gameObject.lettersGuessed.join(', ');
+        guessedLetterDisplay.innerHTML = this.lettersGuessed.join(',  ');
     },
 
     // checks whether the key has already been pressed.  
     keyAlreadyPressed: function (key) {
-        for (i = 0; i < gameObject.lettersGuessed.length; i++) {
-            if (gameObject.lettersGuessed[i] === key) {
+        for (i = 0; i < this.lettersGuessed.length; i++) {
+            if (this.lettersGuessed[i] === key) {
                 return true;
             };
         };
@@ -103,71 +106,76 @@ const gameObject = {
     // ****the method that is called on any keyup event****
     // checks if the game is waiting for the user, if so starts the game.
     checkValidKeyEvent: function (key) {
-        if (gameObject.isActive === false) {
-            gameObject.startGame();
+        if (this.isActive === false) {
+            this.startGame();
 
     // if the game is already active, and if the key is a valid choice, the 
     // the letter is added to the array of letters guessed and
     // 'run' through the main game logic
         } else {
-            let checkIfKeyPress = gameObject.keyAlreadyPressed(key);
-            let checkIfLetter = gameObject.isLetter(key);
+            let checkIfKeyPress = this.keyAlreadyPressed(key);
+            let checkIfLetter = this.isLetter(key);
 
             if (checkIfKeyPress === false && checkIfLetter === true) {
-                gameObject.addKeyPress(key);
-                gameObject.runLetter(key);
+                this.addKeyPress(key);
+                this.runLetter(key);
             };
         };
     },
 
-    toggleBanner: function () {
-        if (bannerDisplay.innerHTML = defaultBannerDisplay) {
-            bannerDisplay.innerHTML = activeBannerDisplay;
-        } else if (bannerDisplay.innerHTML = activeBannerDisplay) {
-            bannerDisplay.innerHTML = defaultBannerDisplay;
-        };
-    },
-
+    // the endGame() method is called by the runLetter() method when the user  
+    // has either enterd the entire word correctly, or run out of guesses.  It
+    // is passed currentResult which if true triggers a win.
     endGame: function (currentResult) {
+
+        bannerDisplay.innerText = defaultBannerDisplay;
+        guessedLetterDisplay.innerHTML = '';
+        this.isActive = false;
+
         if (currentResult === true) {
             this.numUserWins++;
-            winsDisplay.innerHTML = gameObject.numUserWins;
-            bannerDisplay.innerHTML = defaultBannerDisplay;
-            this.isActive = false;
+            winsDisplay.innerHTML = this.numUserWins;
             console.log('won');
-            targetWordDisplay.innerHTML = '';
-            
         } else {
             console.log('lost');
-            bannerDisplay.innerHTML = defaultBannerDisplay;
-            targetWordDisplay.innerHTML = '';
-            this.isActive = false;
         }
     },
 
+
+    // runLetter is called by the checkValidKeyEvent and is passed the input letter.
+    // it is composed of a for loop that iterates over the targetWord, and with a 
+    // nested conditional that checks each time if the passedLetter = the current
+    // target letter.  if so, it converts the letter in targetWordGameState at the same 
+    // that the loop is at in iterating the targetWord.  it then sets correctGuess to 
+    // true to avoid triggering the default incorrect guess condition. 
     runLetter: function (passedLetter) {
         let correctGuess = '';
-        for (i = 0; i < gameObject.targetWord.length; i++) {
-            let currentLetter = gameObject.targetWord[i];
+        for (i = 0; i < this.targetWord.length; i++) {
+            let currentLetter = this.targetWord[i];
             if (passedLetter === currentLetter) {
-                gameObject.targetWordGameState[i] = currentLetter;
+                this.targetWordGameState[i] = currentLetter;
                 correctGuess = true;
             };
         };
         
-        if (gameObject.targetWordGameState.includes('_') === false) {
-            gameObject.endGame(true);
+        //if this letter filled the last remaining '_' in targetWordGameState then 
+        // the game is over and endGame(true) is called.
+        if (this.targetWordGameState.includes('_') === false) {
+            guessedLetterDisplay.innerHTML = '';
+            this.endGame(true);
         };
 
         if (!correctGuess) {
             this.guessesLeft--;
+            guessesLeftDisplay.innerHTML = this.guessesLeft;
             console.log(this.guessesLeft);
             if (this.guessesLeft === 0) {
-                gameObject.endGame(false);
-            }
-        }
+                guessedLetterDisplay.innerHTML = '';
+                this.endGame(false);
+            };
+        };
 
-        targetWordDisplay.innerHTML = gameObject.targetWordGameState.join(' ');
+        targetWordDisplay.innerHTML = this.targetWordGameState.join(' ');
     }
 };
 

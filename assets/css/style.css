@@ -1,6 +1,22 @@
 body {
     margin: 20px;
     padding: 20px;
-    background-color: mediumpurple;
-    color: aliceblue;
+    background-color: rgba(242, 209, 148, 1);
+    color: #40110D;
 }
+
+/* Color Theme Swatches in Hex */
+.IMG_7163-1-hex { color: #F2D194; }
+.IMG_7163-2-hex { color: #734E38; }
+.IMG_7163-3-hex { color: #40110D; }
+.IMG_7163-4-hex { color: #F2695C; }
+.IMG_7163-5-hex { color: #F2958D; }
+
+/* Color Theme Swatches in RGBA */
+.IMG_7163-1-rgba { color: rgba(242, 209, 148, 1); }
+.IMG_7163-2-rgba { color: rgba(115, 78, 56, 1); }
+.IMG_7163-3-rgba { color: rgba(64, 17, 13, 1); }
+.IMG_7163-4-rgba { color: rgba(242, 105, 92, 1); }
+.IMG_7163-5-rgba { color: rgba(242, 149, 141, 1); }
+
+/* 1245 */
