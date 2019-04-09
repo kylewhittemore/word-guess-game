@@ -115,7 +115,11 @@ const gameObject = {
             winsDisplay.innerHTML = this.numUserWins;
         } else {
             fistDisplay.src = fistImageArray[0];
+            targetWordDisplay.textContent = this.targetWord;
+            // debugger;
+            console.log(this);
             console.log(this.targetWord);
+            console.log(targetWordDisplay.innerHTML);
         }
     },
 
@@ -157,7 +161,7 @@ const gameObject = {
                 correctGuess = true;
             };
         };
-
+        targetWordDisplay.innerHTML = this.targetWordGameState.join(' ');
         //if this letter filled the last remaining '_' in targetWordGameState then the game is over and endGame(true) is called.
         if (this.targetWordGameState.includes('_') === false) {
             guessedLetterDisplay.innerHTML = '';
@@ -175,7 +179,7 @@ const gameObject = {
                 this.endGame(false);
             };
         };
-        targetWordDisplay.innerHTML = this.targetWordGameState.join(' ');
+        // targetWordDisplay.innerHTML = this.targetWordGameState.join(' ');
     }
 };
 
