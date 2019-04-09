@@ -11,7 +11,7 @@ const guessedLetterDisplay = document.getElementById('display-guessed-letter');
 const targetWordDisplay = document.getElementById('display-target-word');
 const bannerDisplay = document.getElementById('banner-text');
 const winsDisplay = document.getElementById('display-number-wins');
-var fistDisplay = document.getElementById('fist');
+const fistDisplay = document.getElementById('fist');
 
 // the banner is a title when playing, and prompts the user to press a key to start a new game.
 const defaultBannerDisplay = 'Press a key to begin!';
@@ -36,7 +36,8 @@ const gameObject = {
     // .startGame is called after the user presses a key top trigger the game state the method sets the gameboard up with default values, selects the targetWord, and splits it into the targetWordGameState array as '_' that will be converted to their letter values as the game progresses.
     startGame: function () {
         this.targetWord = this.getTargetWord(wordArray);
-        this.targetWordGameState = this.targetWord.split("");
+        // this.targetWord.split("")]
+        this.targetWordGameState = [];
         this.lettersGuessed = [];
         this.guessesLeft = 5;
         this.isActive = true;
@@ -44,6 +45,9 @@ const gameObject = {
         bannerDisplay.innerHTML = activeBannerDisplay;
 
         // loop to set the gameState counter, uses a '_____' copy of the word, and converts each letter to '_'
+        
+        // this.targetWordGameState = this.targetWord.map(x => x = '_');
+        
         for (i = 0; i < this.targetWord.length; i++) {
             this.targetWordGameState[i] = '_';
         };
