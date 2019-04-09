@@ -3,6 +3,7 @@ body {
     padding: 20px;
     background-color: white;
     color: #40110D;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
 }
 
 .gameboard {
@@ -11,22 +12,20 @@ body {
     flex-direction: column;
     height: 800px;
     width: 800px;
-    /* background-color: #F2D194; */
     background-color: white;
     align-items: stretch;
     text-align: center;
 }
 
-.display-stats-container {
-    display: flex;
-    flex-direction: row;
-    border: none;
-  
-}
-
 .guess-counter-image {
     height: 400px;
     width: 400px;
-    border: none;
-    background-color:  #F2D194;
 }
+
+#display-stats-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    height: 100px;
+}
+
