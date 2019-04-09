@@ -1,0 +1,32 @@
+body {
+    margin: 20px;
+    padding: 20px;
+    background-color: white;
+    color: #40110D;
+}
+
+.gameboard {
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    height: 800px;
+    width: 800px;
+    /* background-color: #F2D194; */
+    background-color: white;
+    align-items: stretch;
+    text-align: center;
+}
+
+.display-stats-container {
+    display: flex;
+    flex-direction: row;
+    border: none;
+  
+}
+
+.guess-counter-image {
+    height: 400px;
+    width: 400px;
+    border: none;
+    background-color:  #F2D194;
+}
