@@ -12,6 +12,7 @@ const targetWordDisplay = document.getElementById('display-target-word');
 const bannerDisplay = document.getElementById('banner-text');
 const winsDisplay = document.getElementById('display-number-wins');
 const fistDisplay = document.getElementById('fist');
+const resultWord = document.getElementById('result-word');
 
 // the banner is a title when playing, and prompts the user to press a key to start a new game.
 const defaultBannerDisplay = 'Press a key to begin!';
@@ -23,7 +24,6 @@ fistDisplay.src = './assets/images/default.jpg';
 
 // the game object itself!
 //first are the property declarations.  mostly they are initialized as empty types. the names are fairly straightforward, except for targetWord vs. targetWordGameState. targetWord is re-set each time .getTargetWord() is called (in the .startGame() method), and it is the word that the user is trying to guess.  targetWordGameState is an array that has a '_' for each letter in targetWord.  It serves as the game state counter, each valid guess switches the '_' for the letter guessed.  when the targetWordGameState has no more '_' the user has won and .endGame() is triggered.
-
 const gameObject = {
 
     isActive: false,
@@ -36,7 +36,7 @@ const gameObject = {
     // .startGame is called after the user presses a key top trigger the game state the method sets the gameboard up with default values, selects the targetWord, and splits it into the targetWordGameState array as '_' that will be converted to their letter values as the game progresses.
     startGame: function () {
         this.targetWord = this.getTargetWord(wordArray);
-        // this.targetWord.split("")]
+        console.log(this.targetWord);
         this.targetWordGameState = [];
         this.lettersGuessed = [];
         this.guessesLeft = 5;
@@ -45,13 +45,10 @@ const gameObject = {
         bannerDisplay.innerHTML = activeBannerDisplay;
 
         // loop to set the gameState counter, uses a '_____' copy of the word, and converts each letter to '_'
-        
-        // this.targetWordGameState = this.targetWord.map(x => x = '_');
-        
         for (i = 0; i < this.targetWord.length; i++) {
             this.targetWordGameState[i] = '_';
         };
-
+        
         // the target word is then displayed as '_'s 
         targetWordDisplay.innerHTML = this.targetWordGameState.join(' ');
     },
@@ -108,17 +105,17 @@ const gameObject = {
 
     // the endGame() method is called by the runLetter() method when the user has either enterd the entire word correctly, or run out of guesses.  It is passed currentResult which if true triggers a win.
     endGame: function (currentResult) {
-
         bannerDisplay.innerText = defaultBannerDisplay;
         guessedLetterDisplay.innerHTML = '';
         this.isActive = false;
-
+        
         if (currentResult === true) {
             fistDisplay.src = fistImageArray[6];
             this.numUserWins++;
             winsDisplay.innerHTML = this.numUserWins;
         } else {
             fistDisplay.src = fistImageArray[0];
+            console.log(this.targetWord);
         }
     },
 
