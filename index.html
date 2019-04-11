@@ -7,32 +7,30 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="./assets/css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 
 <body>
     <div class="gameboard">
-        <h1 id="banner-text"></h1>
+        <h1 id="banner-display"></h1>
         <div id="display-stats-container">
             <div id="display-missed-guesses">
                 <h2>Missed-Guesses: </h2>
-                <h2 id="display-guessed-letter"></h2>
+                <h2 id="guessed-letter-display"></h2>
             </div>
             <div id="display-games-won">
                 <h2>Number of Wins: </h2>
-                <h2 id="display-number-wins"></h2>
+                <h2 id="wins-display"></h2>
             </div>
         </div>
 
         <div id="display-fist">
-            <img class="guess-counter-image" id="fist" src="./assets/images/exp.jpg" />
+            <img class="guess-counter-image" id="fist-image" src="./assets/images/exp.jpg" />
         </div>
 
         <div>
             <h2>Target Word: </h2>
-            <h2 id="display-target-word"></h2>
-        </div>
-        <div>
-            <h2 id="result-word"></h2>
+            <h2 id="target-word-display"></h2>
         </div>
     </div>
     <script src="./assets/javascript/game.js" async defer></script>

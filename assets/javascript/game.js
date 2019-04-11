@@ -1,23 +1,15 @@
+
 const alphabetArray = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
 
 const wordArray = ['bootstrap', 'javascript', 'html', 'css', 'node', 'jquery', 'document', 'class', 'function', 'variable', 'object', 'browser', 'responsive', 'element', 'camelcase', 'display', 'flexbox', 'float', 'recursive', 'static', 'database', 'server', 'login'];
 
 const fistImageArray = ['./assets/images/0.jpg', './assets/images/1.jpg', './assets/images/2.jpg', './assets/images/3.jpg', './assets/images/4.jpg', './assets/images/5.jpg', './assets/images/won.jpg'];
 
-//assign the relevant html elements to js variables.
-const guessedLetterDisplay = document.getElementById('display-guessed-letter');
-const targetWordDisplay = document.getElementById('display-target-word');
-const bannerDisplay = document.getElementById('banner-text');
-const winsDisplay = document.getElementById('display-number-wins');
-const fistDisplay = document.getElementById('fist');
-const resultWord = document.getElementById('result-word');
-
 const defaultBannerDisplay = 'Press a key to begin!';
 const activeBannerDisplay = 'Word Guess Game!';
 
-
-bannerDisplay.innerHTML = defaultBannerDisplay;
-fistDisplay.src = './assets/images/default.jpg';
+$('#banner-display').text(defaultBannerDisplay);
+$('#fist-image').attr('src', './assets/images/default.jpg');
 
 const gameObject = {
 
@@ -30,21 +22,23 @@ const gameObject = {
 
     startGame: function () {
         this.targetWord = this.getTargetWord(wordArray);
+        console.log(this.targetWord);
         this.targetWordGameState = [];
         this.lettersGuessed = [];
         this.guessesLeft = 5;
         this.isActive = true;
         this.displayFistState(this.guessesLeft);
-        bannerDisplay.innerHTML = activeBannerDisplay;
+
+        $('#banner-display').text(activeBannerDisplay);
 
         this.targetWordGameState = this.targetWord.split('').map(() => '_');
 
-        targetWordDisplay.innerHTML = this.targetWordGameState.join(' ');
+        $('#target-word-display').text(this.targetWordGameState.join(' '));
     },
 
     getTargetWord: arr => arr[Math.floor(Math.random() * arr.length)],
 
-    displayFistState: num => fistDisplay.src = fistImageArray[num],
+    displayFistState: num => $('#fist-image').attr('src', fistImageArray[num]),
 
     keyAlreadyPressed: key => gameObject.lettersGuessed.includes(key),
 
@@ -52,7 +46,7 @@ const gameObject = {
 
     addKeyPress: function (key) {
         this.lettersGuessed.push(key);
-        guessedLetterDisplay.innerHTML = this.lettersGuessed.join(',  ');
+        $('#guessed-letter-display').text(this.lettersGuessed.join(', '))
     },
 
     checkValidKeyEvent: function (key) {
@@ -71,22 +65,23 @@ const gameObject = {
     },
 
     endGame: function (currentResult) {
-        bannerDisplay.innerText = defaultBannerDisplay;
-        guessedLetterDisplay.innerHTML = '';
+        $('#banner-display').text(defaultBannerDisplay);
+        $('#guessed-letter-display').text('');
         this.isActive = false;
 
         if (currentResult === true) {
-            fistDisplay.src = fistImageArray[6];
+            $('#fist-image').attr('src', fistImageArray[6]);
             this.numUserWins++;
-            winsDisplay.innerHTML = this.numUserWins;
+            $('#wins-display').text(this.numUserWins);
         } else {
-            fistDisplay.src = fistImageArray[0];
-            targetWordDisplay.textContent = this.targetWord;
+            $('#fist-image').attr('src', fistImageArray[0]);
+            $('#target-word-display').text(this.targetWord);
         }
     },
 
     runLetter: function (passedLetter) {
         let correctGuess = '';
+        // I still think that this could be done with a higher-order function
         for (i = 0; i < this.targetWord.length; i++) {
             let currentLetter = this.targetWord[i];
             if (passedLetter === currentLetter) {
@@ -98,20 +93,20 @@ const gameObject = {
                 correctGuess = true;
             };
         };
-        targetWordDisplay.innerHTML = this.targetWordGameState.join(' ');
+        
+        $('#target-word-display').text(this.targetWordGameState.join(' '));
 
         if (this.targetWordGameState.includes('_') === false) {
-            guessedLetterDisplay.innerHTML = '';
-            fistDisplay.src = './assets/images/won.jpg'
+            $('#guessed-letter-display').text('');
+            $('#fist-image').attr('src', './assets/images/won.jpg'),
             this.endGame(true);
         };
 
         if (!correctGuess) {
             this.guessesLeft--;
             this.displayFistState(this.guessesLeft);
-
             if (this.guessesLeft === 0) {
-                guessedLetterDisplay.innerHTML = '';
+                $('#guessed-letter-display').text('');
                 this.endGame(false);
             };
         };
@@ -122,4 +117,6 @@ document.addEventListener('keyup', function (event) {
     console.log(event.key);
     gameObject.checkValidKeyEvent(event.key);
 });
+
+
 
